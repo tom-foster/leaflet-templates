@@ -11,11 +11,6 @@ var urls = [
 var data;
 var geoJSONLayer = L.geoJSON();
 
-L.featureGroup([urls[0], urls[1], polyline])
-    .bindPopup('Hello world!')
-    .on('click', function() { alert('Clicked on a member of the group!'); })
-    .addTo(map);
-
 function geoJSONLeafletPromise(url) {
     let geoJSONPromise = new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -29,7 +24,11 @@ function geoJSONLeafletPromise(url) {
     geoJSONPromise.then(success => {
         console.log('Checkbox promise worked?' + success);
         data = success;
-        geoJSONLayer = L.geoJSON(data).addTo(map);
+        // This now adds data to the layer itself creating one layer.
+        geoJSONLayer.addData(data);
+        // geoJSONLayer = L.geoJSON(data).addTo(map);
+        console.log(geoJSONLayer);
+        console.log(L.stamp(data));
     }).catch(
         (rejection) => {
             console.log(rejection);
@@ -40,23 +39,66 @@ function geoJSONLeafletPromise(url) {
 //grab the checkboxes by the leaflet-checkbox class
 var checkBoxes = document.getElementsByClassName('leaflet-checkbox');
 
-
+//array of bools which will be the length of the urls.
+// this will need changing later.
+var checkBoxBools = [false, false, false, false, false, false];
 
 for (var i = 0; i < checkBoxes.length; i++) {
     let checkBox = checkBoxes[i].firstElementChild;
     let index = i;
-
-    console.log('this is a: ', i)
-    console.log(checkBox);
     checkBox.addEventListener('change', function(e) {
-       if (this.checked) {
-           //this isn't working
-           console.log(urls);
-           geoJSONLeafletPromise(urls[index]);
-       }
-       else {
-           console.log('not checked')
-           map.removeLayer(geoJSONLayer);
-       }
+        if (this.checked){
+            if (checkBoxBools[index] === false) {   
+                //this isn't working
+                checkBoxBools[index] = true;
+                geoJSONLeafletPromise(urls[index]);
+
+            }
+            geoJSONLayer.addTo(map);
+
+
+            console.log('getLayers: ', geoJSONLayer.getLayers());
+            }
+        else {
+            console.log('not checked')
+            map.removeLayer(geoJSONLayer);
+
+        }
     })
 }
+
+var checkBoxContainer = document.getElementById('checkbox-container');
+checkBoxContainer.addEventListener('change', function(e) {
+    var length = 0;
+    // for (var i = 0; i < checkBoxes.length; i++) {
+    //     let checkBox = checkBoxes[i].firstElementChild;
+    //     let index = i;
+        
+    //     if (checkBox.checked) {
+    //         geoJSONLeafletPromise(urls[index]);
+    //     }
+    //     else {
+    //         map.removeLayer(geoJSONLayer);
+    //     }
+    // }
+})
+
+var deleteLayers = document.getElementById('leaflet-clear-button');
+deleteLayers.addEventListener('click', function(e) {
+    geoJSONLayer.clearLayers(); // works with addData(data)
+    for (var i = 0; i < checkBoxes.length; i++) {
+        let checkBox = checkBoxes[i].firstElementChild.checked = false;
+    }
+});
+
+/**
+ * We want to load all files as a promise. However we don't want to call the files again.
+ * So there it should only be returned once.
+ * 
+ * Then we want to move that file and it's loaded objects so that we only remove the ones related
+ * to the index in getLayers
+ * There by only removing the objects that are not needed.
+ * 
+ * It's all about calling the promise once.
+ */
+
