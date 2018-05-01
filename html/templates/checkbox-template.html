@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Single GeoJSON to be loaded.</title>
+    <!--Leaflet CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+        crossorigin="" />
+    <!--Leaflet JS-->
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+        crossorigin=""></script>
+    <!--proj4js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.3/proj4.js"></script>
+    <!--proj4leaflet.js the helper functions for proj4js-->
+    <script src="./js/proj4leaflet.js"></script>
+    <!-- <link rel="stylesheet" href="./css/jsna-leaflet-layers-only.css"> -->
+    <!-- <link rel="stylesheet" href="./css/promise-example.css"> -->
+    <link rel="stylesheet" href="./css/basic-leaflet.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="phasing-box-inner">
+            <h1>
+                Name of single map goes here.
+            </h1>
+        </div>
+
+        <div class="inner">
+            <div class="leaflet-checkbox">
+                <input type="checkbox" name="checkbox-1" id="checkbox-1">
+                <label for="checkbox-1">Checkbox-1</label>
+            </div>
+            <div class="leaflet-checkbox">
+                <input type="checkbox" name="checkbox-2" id="checkbox-2">
+                <label for="checkbox-2">Checkbox-2</label>
+            </div>
+            <div class="leaflet-checkbox">
+                <input type="checkbox" name="checkbox-3" id="checkbox-3">
+                <label for="checkbox-3">Checkbox-3</label>
+            </div>
+            <div class="leaflet-checkbox">
+                <input type="checkbox" name="checkbox-4" id="checkbox-4">
+                <label for="checkbox-4">Checkbox-4</label>
+            </div>
+            <div class="leaflet-checkbox">
+                <input type="checkbox" name="checkbox-5" id="checkbox-5">
+                <label for="checkbox-5">Checkbox-5</label>
+            </div>
+            <div class="leaflet-checkbox">
+                <input type="checkbox" name="checkbox-6" id="checkbox-6">
+                <label for="checkbox-6">Checkbox-6</label>
+            </div>
+        </div>
+        <p>
+            Text that you wish to display goes in the paragraph tags.
+        </p>
+        <p>
+            Last updated 01/05/2018.
+        </p>
+
+    </div>
+    <div id="map"></div>
+    <!--Not this one-->
+    <script src="./js/jsna-leaflet-tms.js" type="text/javascript"></script>
+    <!--Tools not needed for this-->
+    <!--<script src="./js/leaflet-tools.js" type="text/javascript"></script>-->
+    <script src="./js/leaflet-layers-only.js"></script>
+    <!-- The geojson file may differ depending on how complicated the intended work would be. -->
+    <script src="./js/geojson.js"></script>
+    <!-- For simple maps -->
+    <!-- <script src="./js/simple-geojson.js"></script> -->
+</body>
+
+</html>
