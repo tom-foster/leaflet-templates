@@ -1,5 +1,7 @@
 /** Created by TF 01/05/18
- * This will form the basis of a simple
+ * This will form the basis of a simple geojson, and only displays it and nothing more.
+ * You should look at extending the geoJSONLayer via leaflet.js
+ * This version relies on 1.3.1 of leaflet.
  */
 var requestURL = 'data/flooding_data.geojson';
 //global scope for data since this feels like a lot of quick projects
