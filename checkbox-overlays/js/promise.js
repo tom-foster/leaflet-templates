@@ -25,7 +25,8 @@ function geoJSONLeafletPromise(url) {
         console.log('Checkbox promise worked?' + success);
         data = success;
         // This now adds data to the layer itself creating one layer.
-        geoJSONLayer.addData(data);
+        geoJSONLayer.addData(data).addTo(map);
+        // geoJSONLayer.addData(data);
         // geoJSONLayer = L.geoJSON(data).addTo(map);
         console.log(geoJSONLayer);
         console.log(L.stamp(data));
@@ -43,6 +44,10 @@ var checkBoxes = document.getElementsByClassName('leaflet-checkbox');
 // this will need changing later.
 var checkBoxBools = [false, false, false, false, false, false];
 
+// number in arrays will tell me the length, 
+var positionInLayer = [];
+
+
 for (var i = 0; i < checkBoxes.length; i++) {
     let checkBox = checkBoxes[i].firstElementChild;
     let index = i;
@@ -52,12 +57,15 @@ for (var i = 0; i < checkBoxes.length; i++) {
                 //this isn't working
                 checkBoxBools[index] = true;
                 geoJSONLeafletPromise(urls[index]);
-
+                positionInLayer.push(geoJSONLayer.getLayers());
             }
-            geoJSONLayer.addTo(map);
-
-
+            if (!positionInLayer[index + 1]) {
+                positionInLayer[index] = geoJSONLayer.getLayers().length;
+            }
+            // This isn't working.
+            
             console.log('getLayers: ', geoJSONLayer.getLayers());
+            console.log('positionInLayer', positionInLayer);
             }
         else {
             console.log('not checked')
