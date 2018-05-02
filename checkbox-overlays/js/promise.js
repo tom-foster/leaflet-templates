@@ -5,8 +5,18 @@
  * 
  */
 var urls = [
-    'data/air-quality-test.geojson',
-    'data/flooding_data.geojson',
+    // 'data/air-quality-test.geojson',
+    // 'data/flooding_data.geojson',
+    'data/Older people social work team offices.geojson',
+    'data/Older people social work team areas.geojson',
+    'data/Lets talk hubs gp.geojson',
+    'data/Lets talk hubs wcc.geojson',
+    'data/Proposed place based teams gp surgeries coventry rugby ccg option 1.geojson',
+    'data/Proposed place based teams gp surgeries coventry rugby ccg option 2.geojson',
+    'data/Proposed place based teams gp surgeries north warwickshire ccg option 1.geojson',
+    'data/Proposed place based teams gp surgeries south warwickshire ccg option 1.geojson',
+    'data/Proposed place based teams gp surgeries south warwickshire ccg option 2.geojson',
+    'data/Proposed place based teams gp surgeries south warwickshire ccg option 3.geojson'
 ]
 var data;
 var geoJSONLayer = L.geoJSON();
@@ -42,7 +52,10 @@ var checkBoxes = document.getElementsByClassName('leaflet-checkbox');
 
 //array of bools which will be the length of the urls.
 // this will need changing later.
-var checkBoxBools = [false, false, false, false, false, false];
+var checkBoxBools = [];
+for (var i = 0; i < urls.length; i++) {
+    checkBoxBools.push(false);
+}
 
 // number in arrays will tell me the length, 
 var positionInLayer = [];
