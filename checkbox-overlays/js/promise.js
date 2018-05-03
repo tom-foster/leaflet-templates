@@ -64,6 +64,9 @@ deleteLayers.addEventListener('click', function(e) {
     }
 });
 
+/**
+ * This could actually be extended to include all check boxes in that specific structure.
+ */
 function loadCheckBoxes(checkBoxes) {
     for(var i = 0; i < checkBoxes.length; i++) {
         checkBoxes[i].children[1].textContent = urls[i].replace('.geojson', '');
