@@ -33,13 +33,10 @@ function geoJSONLeafletPromise(url) {
 
     geoJSONPromise.then(success => {
         console.log('Checkbox promise worked?' + success);
-        data = success;
+        var data = success;
         // This now adds data to the layer itself creating one layer.
         geoJSONLayer.addData(data).addTo(map);
-        // geoJSONLayer.addData(data);
-        // geoJSONLayer = L.geoJSON(data).addTo(map);
-        console.log(geoJSONLayer);
-        console.log(L.stamp(data));
+        // geoJSONLayers = L.geoJSON(data).addTo(map);
     }).catch(
         (rejection) => {
             console.log(rejection);
@@ -57,31 +54,20 @@ for (var i = 0; i < urls.length; i++) {
     checkBoxBools.push(false);
 }
 
-// number in arrays will tell me the length, 
-var positionInLayer = [];
-
-
-for (var i = 0; i < checkBoxes.length; i++) {
-    let checkBox = checkBoxes[i].firstElementChild;
-    let index = i;
+function tester(checkBox, i) {
+    var geoJSONLayer = L.geoJSON()
     checkBox.addEventListener('change', function(e) {
-        if (this.checked){
-            if (checkBoxBools[index] === false) {   
-                //this isn't working
-                checkBoxBools[index] = true;
-                geoJSONLeafletPromise(urls[index]);
-                positionInLayer.push(geoJSONLayer.getLayers());
+        console.log(i);
+        if (this.checked) {
+            if (checkBoxBools[i] === false) {
+                checkBoxBools[i] = true;
+                geoJSONLeafletPromise(urls[i]);
             }
-            if (!positionInLayer[index + 1]) {
-                positionInLayer[index] = geoJSONLayer.getLayers().length;
-            }
-            // This isn't working.
-            
-            console.log('getLayers: ', geoJSONLayer.getLayers());
-            console.log('positionInLayer', positionInLayer);
-            }
+            geoJSONLayer.addTo(map);
+        }
         else {
-            console.log('not checked')
+            geoJSONLayer.remove();
+            geoJSONLayer.clearLayers();
             map.removeLayer(geoJSONLayer);
 
         }
@@ -90,18 +76,15 @@ for (var i = 0; i < checkBoxes.length; i++) {
 
 var checkBoxContainer = document.getElementById('checkbox-container');
 checkBoxContainer.addEventListener('change', function(e) {
-    var length = 0;
-    // for (var i = 0; i < checkBoxes.length; i++) {
-    //     let checkBox = checkBoxes[i].firstElementChild;
-    //     let index = i;
-        
-    //     if (checkBox.checked) {
-    //         geoJSONLeafletPromise(urls[index]);
-    //     }
-    //     else {
-    //         map.removeLayer(geoJSONLayer);
-    //     }
-    // }
+    for (var i = 0; i < checkBoxes.length; i++) {
+        let checkBox = checkBoxes[i].firstElementChild;
+        if (checkBox.checked) {
+            geoJSONLeafletPromise(urls[i]);
+        }
+        else {
+            geoJSONLayer.clearLayers();
+        }
+    }
 })
 
 var deleteLayers = document.getElementById('leaflet-clear-button');
