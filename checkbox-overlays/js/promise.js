@@ -4,27 +4,26 @@
  * Will need massive improvements
  * 
  */
+
+var urlFolder = 'data/';
 var urls = [
-    // 'data/air-quality-test.geojson',
-    // 'data/flooding_data.geojson',
-    'data/Older people social work team offices.geojson',
-    'data/Older people social work team areas.geojson',
-    'data/Lets talk hubs gp.geojson',
-    'data/Lets talk hubs wcc.geojson',
-    'data/Proposed place based teams gp surgeries coventry rugby ccg option 1.geojson',
-    'data/Proposed place based teams gp surgeries coventry rugby ccg option 2.geojson',
-    'data/Proposed place based teams gp surgeries north warwickshire ccg option 1.geojson',
-    'data/Proposed place based teams gp surgeries south warwickshire ccg option 1.geojson',
-    'data/Proposed place based teams gp surgeries south warwickshire ccg option 2.geojson',
-    'data/Proposed place based teams gp surgeries south warwickshire ccg option 3.geojson'
+    'Older people social work team offices.geojson',
+    'Older people social work team areas.geojson',
+    'Lets talk hubs gp.geojson',
+    'Lets talk hubs wcc.geojson',
+    'Proposed place based teams gp surgeries coventry rugby ccg option 1.geojson',
+    'Proposed place based teams gp surgeries coventry rugby ccg option 2.geojson',
+    'Proposed place based teams gp surgeries north warwickshire ccg option 1.geojson',
+    'Proposed place based teams gp surgeries south warwickshire ccg option 1.geojson',
+    'Proposed place based teams gp surgeries south warwickshire ccg option 2.geojson',
+    'Proposed place based teams gp surgeries south warwickshire ccg option 3.geojson'
 ]
-var data;
 var geoJSONLayer = L.geoJSON();
 
-function geoJSONLeafletPromise(url) {
+function geoJSONLeafletPromise(urlFolder, url) {
     let geoJSONPromise = new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
+        xhr.open('GET', (urlFolder + url));
         xhr.responseType = 'json';
         xhr.onload = () => resolve(xhr.response);
         xhr.onerror = () => reject(xhr.statusText);
@@ -32,11 +31,8 @@ function geoJSONLeafletPromise(url) {
     });
 
     geoJSONPromise.then(success => {
-        console.log('Checkbox promise worked?' + success);
-        var data = success;
         // This now adds data to the layer itself creating one layer.
-        geoJSONLayer.addData(data).addTo(map);
-        // geoJSONLayers = L.geoJSON(data).addTo(map);
+        geoJSONLayer.addData(success).addTo(map);
     }).catch(
         (rejection) => {
             console.log(rejection);
@@ -44,42 +40,15 @@ function geoJSONLeafletPromise(url) {
     )
 }
 
-//grab the checkboxes by the leaflet-checkbox class
+//grab the checkboxes by the div leaflet-checkbox class
 var checkBoxes = document.getElementsByClassName('leaflet-checkbox');
-
-//array of bools which will be the length of the urls.
-// this will need changing later.
-var checkBoxBools = [];
-for (var i = 0; i < urls.length; i++) {
-    checkBoxBools.push(false);
-}
-
-function tester(checkBox, i) {
-    var geoJSONLayer = L.geoJSON()
-    checkBox.addEventListener('change', function(e) {
-        console.log(i);
-        if (this.checked) {
-            if (checkBoxBools[i] === false) {
-                checkBoxBools[i] = true;
-                geoJSONLeafletPromise(urls[i]);
-            }
-            geoJSONLayer.addTo(map);
-        }
-        else {
-            geoJSONLayer.remove();
-            geoJSONLayer.clearLayers();
-            map.removeLayer(geoJSONLayer);
-
-        }
-    })
-}
 
 var checkBoxContainer = document.getElementById('checkbox-container');
 checkBoxContainer.addEventListener('change', function(e) {
     for (var i = 0; i < checkBoxes.length; i++) {
         let checkBox = checkBoxes[i].firstElementChild;
         if (checkBox.checked) {
-            geoJSONLeafletPromise(urls[i]);
+            geoJSONLeafletPromise(urlFolder, urls[i]);
         }
         else {
             geoJSONLayer.clearLayers();
@@ -94,6 +63,14 @@ deleteLayers.addEventListener('click', function(e) {
         let checkBox = checkBoxes[i].firstElementChild.checked = false;
     }
 });
+
+function loadCheckBoxes(checkBoxes) {
+    for(var i = 0; i < checkBoxes.length; i++) {
+        checkBoxes[i].children[1].textContent = urls[i].replace('.geojson', '');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadCheckBoxes(checkBoxes), true);
 
 /**
  * We want to load all files as a promise. However we don't want to call the files again.
