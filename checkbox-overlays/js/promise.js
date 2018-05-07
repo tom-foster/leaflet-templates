@@ -18,27 +18,59 @@ var urls = [
     'Proposed place based teams gp surgeries south warwickshire ccg option 2.geojson',
     'Proposed place based teams gp surgeries south warwickshire ccg option 3.geojson'
 ]
+
+//instead of an array of urls, instead let's try passing in an array of objects,
+//loaded with data. This might deal with it slightly better. This will then make it easier to write one
+// time geoJSONLeafletPromise so really reusuable!
+var urls = [
+    {
+        url : 'Older people social work team offices.geojson',
+        color : 'red',
+        class : 'red'
+    },
+    {
+        url : 'Older people social work team areas.geojson',
+        color : 'rebeccapurple',
+    }
+]
 var geoJSONLayer = L.geoJSON();
 
 function geoJSONLeafletPromise(urlFolder, url) {
     let geoJSONPromise = new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', (urlFolder + url));
+        xhr.open('GET', (urlFolder + url.url));
         xhr.responseType = 'json';
         xhr.onload = () => resolve(xhr.response);
         xhr.onerror = () => reject(xhr.statusText);
         xhr.send();
     });
-
     geoJSONPromise.then(success => {
         // This now adds data to the layer itself creating one layer.
-        geoJSONLayer.addData(success).addTo(map);
+        geoJSONLayer.addData(success) 
+        .setStyle(
+            {
+                fillColor : url.color,
+                color : url.color,
+                className : url.class,
+            }
+        )
+        .eachLayer(function (layer) {
+            if (layer.feature.geometry.type === 'Point') {
+                console.log('its point data', layer);
+                console.log('layer options', layer.options._icon);
+                // console.log(document.getAttribute('title'))
+
+            }
+        })
+        geoJSONLayer.addData(success);
+        geoJSONLayer.addTo(map);
     }).catch(
         (rejection) => {
             console.log(rejection);
         }
     )
 }
+
 
 //grab the checkboxes by the div leaflet-checkbox class
 var checkBoxes = document.getElementsByClassName('leaflet-checkbox');
@@ -49,6 +81,7 @@ checkBoxContainer.addEventListener('change', function(e) {
         let checkBox = checkBoxes[i].firstElementChild;
         if (checkBox.checked) {
             geoJSONLeafletPromise(urlFolder, urls[i]);
+            
         }
         else {
             geoJSONLayer.clearLayers();
@@ -69,7 +102,7 @@ deleteLayers.addEventListener('click', function(e) {
  */
 function loadCheckBoxes(checkBoxes) {
     for(var i = 0; i < checkBoxes.length; i++) {
-        checkBoxes[i].children[1].textContent = urls[i].replace('.geojson', '');
+        checkBoxes[i].children[1].textContent = urls[i].url.replace('.geojson', '');
     }
 }
 

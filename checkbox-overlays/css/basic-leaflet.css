@@ -23,6 +23,10 @@ body {
     padding: 5px;
 }
 
+.red {
+    filter: hue-rotate(90deg);
+}
+
 .phasing-box-inner {
     border-bottom: 2px solid var(--new-blue);
 }
