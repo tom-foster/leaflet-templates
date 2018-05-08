@@ -261,14 +261,30 @@ function geoJSONLeafletPromise(urlFolder, url) {
     });
     geoJSONPromise.then(success => {
         // This now adds data to the layer itself creating one layer.
-        geoJSONLayer.addData(success);
+        geoJSONLayer.addData(success)
+        .eachLayer(function (layer) {
+            var propText = layer.feature.properties;
+            console.log('layer.feature.properties.length: ',  layer.feature.properties);
+            // console.log('Object.keys(layer.feature.properties.length: ', Object.keys(layer.feature.properties)[0])
+            // for (var i = 0; i < layer.feature.properties.length; i++) {
+            //     propText += Object.keys(layer.feature.properties)[i] + layer.feature.properties[Object.keys(layer.feature.properties)[i]];
+            // }
+            console.log(Object.keys(propText));
+            textBox = '';
+            for (var i = 0; i < Object.keys(propText).length; i++) {
+                textBox += '<strong>' + Object.keys(propText)[i] + ': </strong>&#09;' 
+                + propText[Object.keys(propText)[i]] + '<br/>';
+            }
+            layer.bindPopup(textBox);
+            // console.log(Object.keys(layer.feature.properties)[i]);
+            // layer.bindPopup(layer.feature.properties)
+        })
     }).catch(
         (rejection) => {
             console.log(rejection);
         }
     )
 }
-
 
 //grab the checkboxes by the div leaflet-checkbox class
 var checkBoxes = document.getElementsByClassName('leaflet-checkbox');
