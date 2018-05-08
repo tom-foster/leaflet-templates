@@ -25,15 +25,230 @@ var urls = [
 var urls = [
     {
         url : 'Older people social work team offices.geojson',
-        color : 'red',
-        class : 'red'
     },
     {
         url : 'Older people social work team areas.geojson',
-        color : 'rebeccapurple',
+    },
+    {
+        url : 'Lets talk hubs gp.geojson',
+        color : 'blue'
+    },
+    {
+        url : 'Lets talk hubs wcc.geojson',
+        // color : 'hotpink',
+    },
+    {
+        url : 'Proposed place based teams gp surgeries coventry rugby ccg option 1.geojson',
+    },
+    {
+        url : 'Proposed place based teams gp surgeries coventry rugby ccg option 2.geojson',
+    },
+    {
+        url : 'Proposed place based teams gp surgeries north warwickshire ccg option 1.geojson',
+    },
+    {
+        url : 'Proposed place based teams gp surgeries south warwickshire ccg option 1.geojson',
+    },
+    {
+        url : 'Proposed place based teams gp surgeries south warwickshire ccg option 2.geojson',
+    },
+    {
+        url : 'Proposed place based teams gp surgeries south warwickshire ccg option 3.geojson',
     }
+
+
 ]
-var geoJSONLayer = L.geoJSON();
+var geoJSONLayer = L.geoJSON(false, {
+    style : function(feature) {
+        console.log(feature)
+        if (feature.geometry.type == 'Polygon') {
+            return {
+                fillOpacity : 0.01
+            }
+        }
+        switch (feature.properties.Type) {
+            case 'Placed based team option 1' : 
+                switch (feature.properties['Place Based Team Option 1']) {
+                    case '1':
+                        return {
+                            fillColor: 'red',
+                            fillOpacity: 0.2,
+                        }
+                    case '2':
+                        return {
+                            fillColor: 'blue',
+                            fillOpacity: 0.2
+                        }
+                    case '3':
+                        return {
+                            fillColor: 'green',
+                            fillOpacity: 0.2
+                        }
+                    case '4':
+                        return {
+                            fillColor: 'purple',
+                            fillOpacity: 0.2
+                        }
+                    case '5':
+                        return {
+                            fillColor: 'orange',
+                            fillOpacity: 0.2
+                        }
+                    case '6':
+                        return {
+                            fillColor: 'magenta',
+                            fillOpacity: 0.2
+                        }
+                    case '7':
+                        return {
+                            fillColor: 'teal',
+                            fillOpacity: 0.2
+                        }
+                    case '8':
+                        return {
+                            fillColor: 'maroon',
+                            fillOpacity: 0.2
+                        }
+                    case '9':
+                        return {
+                            fillColor: 'navy',
+                            fillOpacity: 0.2
+                        }
+                    default:
+                        return {
+                            radius: 100
+                        }
+                }   
+            
+            case 'Placed based team option 2' :
+                switch (feature.properties['Place Based Team Option 2']) {
+                    case '1':
+                        return {
+                            fillColor: 'red',
+                            fillOpacity: 0.2,
+                        }
+                    case '2':
+                        return {
+                            fillColor: 'blue',
+                            fillOpacity: 0.2
+                        }
+                    case '3':
+                        return {
+                            fillColor: 'green',
+                            fillOpacity: 0.2
+                        }
+                    case '4':
+                        return {
+                            fillColor: 'purple',
+                            fillOpacity: 0.2
+                        }
+                    case '5':
+                        return {
+                            fillColor: 'orange',
+                            fillOpacity: 0.2
+                        }
+                    case '6':
+                        return {
+                            fillColor: 'magenta',
+                            fillOpacity: 0.2
+                        }
+                    case '7':
+                        return {
+                            fillColor: 'teal',
+                            fillOpacity: 0.2
+                        }
+                    case '8':
+                        return {
+                            fillColor: 'maroon',
+                            fillOpacity: 0.2
+                        }
+                    case '9':
+                        return {
+                            fillColor: 'navy',
+                            fillOpacity: 0.2
+                        }
+                    default:
+                        return {
+                            radius: 100
+                        }
+                }
+                
+            case 'Placed based team option 3' : 
+                switch (feature.properties['Place Based Team Option 3']) {
+                    case '1':
+                        return {
+                            fillColor: 'red',
+                            fillOpacity: 0.2,
+                        }
+                    case '2':
+                        return {
+                            fillColor: 'blue',
+                            fillOpacity: 0.2
+                        }
+                    case '3':
+                        return {
+                            fillColor: 'green',
+                            fillOpacity: 0.2
+                        }
+                    case '4':
+                        return {
+                            fillColor: 'purple',
+                            fillOpacity: 0.2
+                        }
+                    case '5':
+                        return {
+                            fillColor: 'orange',
+                            fillOpacity: 0.2
+                        }
+                    case '6':
+                        return {
+                            fillColor: 'magenta',
+                            fillOpacity: 0.2
+                        }
+                    case '7':
+                        return {
+                            fillColor: 'teal',
+                            fillOpacity: 0.2
+                        }
+                    case '8':
+                        return {
+                            fillColor: 'maroon',
+                            fillOpacity: 0.2
+                        }
+                    case '9':
+                        return {
+                            fillColor: 'navy',
+                            fillOpacity: 0.2
+                        }
+                    default:
+                        return {
+                            radius: 100
+                        }
+                }
+            case 'Let\'s talk hub (GP)' : return {
+                fillColor: '#005eb8',
+                color : '#005eb8',
+                stoke : 0.2,
+                fillOpacity: 0.2,
+                radius: 12,
+            }
+            case 'Let\'s talk hub (WCC)' : return {
+                fillColor : 'rgb(0,109,60)',
+                color : 'rgb(0, 109, 60)',
+                fillOpacity: 0.2,
+                radius: 12,
+            }
+        }
+    },
+    pointToLayer : function(feature, latlng) {
+        return L.circleMarker(latlng,
+        {   
+            color : 'inherit',
+            radius : 10,
+            fillOpacity : 1
+        })
+    }
+}).addTo(map);
 
 function geoJSONLeafletPromise(urlFolder, url) {
     let geoJSONPromise = new Promise((resolve, reject) => {
@@ -46,24 +261,7 @@ function geoJSONLeafletPromise(urlFolder, url) {
     });
     geoJSONPromise.then(success => {
         // This now adds data to the layer itself creating one layer.
-        geoJSONLayer.addData(success) 
-        .setStyle(
-            {
-                fillColor : url.color,
-                color : url.color,
-                className : url.class,
-            }
-        )
-        .eachLayer(function (layer) {
-            if (layer.feature.geometry.type === 'Point') {
-                console.log('its point data', layer);
-                console.log('layer options', layer.options._icon);
-                // console.log(document.getAttribute('title'))
-
-            }
-        })
         geoJSONLayer.addData(success);
-        geoJSONLayer.addTo(map);
     }).catch(
         (rejection) => {
             console.log(rejection);
